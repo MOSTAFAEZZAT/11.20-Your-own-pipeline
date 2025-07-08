@@ -5,6 +5,11 @@ module.exports = {
     'es6': true,
 
   },
+  'settings': {
+    'react': {
+      'version': 'detect'
+    }
+  },
   'extends': [
     'eslint:recommended',
     'plugin:react/recommended'
@@ -41,6 +46,7 @@ module.exports = {
     'arrow-spacing': [
       'error', { 'before': true, 'after': true }
     ],
+
     // 'no-console': ['warn', { allow: ['warn', 'error'] }],
     'react/prop-types': 0
   }
