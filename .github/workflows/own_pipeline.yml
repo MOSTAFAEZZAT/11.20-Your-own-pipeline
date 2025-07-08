@@ -10,7 +10,7 @@ on:
       types: [opened, synchronize]
 jobs:
     own_pipeline:
-            if: github.event_name == 'push'
+           # if: github.event_name == 'push'
             runs-on: ubuntu-latest
             steps:
                 - name: Checkout code
