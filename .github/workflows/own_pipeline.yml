@@ -1,4 +1,4 @@
-name: Own Pipeline Phonebook Application
+name: your_own_pipeline
 
 on:
     push:
@@ -23,3 +23,40 @@ jobs:
 
                 - name: Deploy to production
                   run: npm run start
+
+                - name: Trigger Render deployment
+                  run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+
+    tag_release:
+      needs: [own_pipeline]
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.73.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+
+      
+
+      - name: Discord notification
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+    
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
+          
+      - name: Discord notification Failure
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been failed.'
