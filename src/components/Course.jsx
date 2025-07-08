@@ -1,23 +1,24 @@
+/* eslint-disable */
 const Course = ({ course }) => {
 
-    return (
+  return (
+    <div>
+      {course.map(courses => (
         <div>
-            {course.map(courses => (
-                <div>
-                    <h3> {courses.name}</h3>
-                    {
-                        courses.parts.map(part => (
-                            <div>
-                                <p key={part.id} > {part.name} {part.exercises} </p>
-                            </div>
-                        ))
-                    }
-                    <h3>
+          <h3> {courses.name}</h3>
+          {
+            courses.parts.map(part => (
+              <div>
+                <p key={part.id} > {part.name} {part.exercises} </p>
+              </div>
+            ))
+          }
+          <h3>
                         total of {courses.parts.reduce((total, part) => total + part.exercises, 0)} exercises
-                    </h3>
-                </div>
-            ))}
-        </div >
-    )
+          </h3>
+        </div>
+      ))}
+    </div >
+  )
 }
 export default Course

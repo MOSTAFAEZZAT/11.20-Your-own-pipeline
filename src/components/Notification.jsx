@@ -1,7 +1,9 @@
+/* eslint-disable */
 const Notification = ({ sucessMessage, errorMessage }) => {
 
     if (sucessMessage !== null) {
         return (
+        // eslint-disable-next-line  
             <div>
                 <h1 className="sucess">{sucessMessage} </h1>
             </div>

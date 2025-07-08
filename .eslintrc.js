@@ -1,29 +1,43 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   'env': {
-    'commonjs': true,
-    'es2021': true,
+    'browser': true,
+    'es6': true,
 
-    'node': true
   },
-  'overrides': [
-    {
-      'env': {
-        'node': true
-      },
-      'files': [
-        '.eslintrc.{js,cjs}'
-      ],
-      'parserOptions': {
-        'sourceType': 'script',
-        'ecmaVersion': 'latest'
-      }
+  'settings': {
+    'react': {
+      'version': 'detect'
     }
+  },
+  'extends': [
+    'eslint:recommended',
+    'plugin:react/recommended'
   ],
-  'plugins': [
-    '@stylistic/js'
-  ],
-  'extends': 'eslint:recommended',
+  'parserOptions': {
+    'ecmaFeatures': {
+      'jsx': true
+    },
+    'ecmaVersion': 2018,
+    'sourceType': 'module'
+  },
+
   'rules': {
+    'indent': [
+      'error',
+      2
+    ],
+    'linebreak-style': [
+      'error',
+      'unix'
+    ],
+    'quotes': [
+      'error',
+      'single'
+    ],
+    'semi': [
+      'off'
+    ],
     'eqeqeq': 'error',
     'no-trailing-spaces': 'error',
     'object-curly-spacing': [
@@ -32,22 +46,8 @@ module.exports = {
     'arrow-spacing': [
       'error', { 'before': true, 'after': true }
     ],
-    'no-console': 0,
-    '@stylistic/js/indent': [
-      'error',
-      2
-    ],
-    '@stylistic/js/linebreak-style': [
-      'error',
-      'unix'
-    ],
-    '@stylistic/js/quotes': [
-      'error',
-      'single'
-    ],
-    '@stylistic/js/semi': [
-      'error',
-      'never'
-    ],
+
+    // 'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'react/prop-types': 0
   }
 }

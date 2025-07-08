@@ -1,0 +1,69 @@
+
+name: your_own_pipeline
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+      branches: [main]
+      types: [opened, synchronize]
+jobs:
+    own_pipeline:
+           # if: github.event_name == 'push'
+            runs-on: ubuntu-latest
+            steps:
+                - name: Checkout code
+                  uses: actions/checkout@v4
+                - name: Set up Node.js
+                  uses: actions/setup-node@v4 
+                  with:
+                    node-version: '20'
+
+                - name: Install dependencies
+                  run: npm install
+
+                - name: Check style
+                  run: npm run eslint
+
+                - name: Build the application
+                  run: npm run build:webpack
+
+                - name: Trigger Render deployment
+                  run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+
+                  
+                  
+    tag_release:
+      needs: [own_pipeline]
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.73.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          DEFAULT_BUMP: patch
+
+      
+
+      - name: Discord notification
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+    
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
+          
+      - name: Discord notification Failure
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been failed.'
