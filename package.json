@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "fullstack",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start1": "webpack-dev-server --open --mode development",
     "dev": "nodemon index.js",
@@ -16,7 +16,8 @@
     "deploy:full": "npm run build:ui && npm run deploy",
     "logs:prod": "fly logs",
     "lint": "eslint --fix .",
-    "build:webpack": "webpack --mode production"
+    "build:webpack": "webpack --mode production",
+    "eslint": "eslint './**/*.{js,jsx}'"
   },
   "author": "mostafa",
   "license": "ISC",
@@ -43,6 +44,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.37.5",
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.3",
     "nodemon": "^3.1.0",

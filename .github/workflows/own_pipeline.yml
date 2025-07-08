@@ -21,15 +21,18 @@ jobs:
                 - name: Install dependencies
                   run: npm install
 
+                - name: Check style
+                  run: npm run eslint
+
                 - name: Build the application
                   run: npm run build:webpack
-
+                
                 - name: Deploy to production
                   run: npm run start
 
                 - name: Trigger Render deployment
                   run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
-
+                  
     tag_release:
       needs: [own_pipeline]
       runs-on: ubuntu-latest

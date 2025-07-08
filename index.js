@@ -1,8 +1,8 @@
+/* eslint-disable */
 require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
-const Note = require('./models/note')
 const Person = require('./models/person')
 
 app.use(morgan(function (tokens, req, res) {
@@ -121,14 +121,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
   response.status(204).end()
 })
 
-app.delete('/api/notes/:id', (request, response, next) => {
-
-  Note.findByIdAndDelete(request.params.id)
-    .then(result => {
-      response.status(204).end(result)
-    })
-    .catch(error => next(error))
-})
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -136,36 +128,6 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
-app.post('/api/notes', (request, response) => {
-  const body = request.body
-  if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' })
-  }
-  const note = new Note({
-    content: body.content,
-    important: body.important || false,
-  })
-
-  note.save().then(savedNote => {
-    response.json(savedNote)
-  })
-})
-
-app.put('/api/notes/:id', (request, response, next) => {
-
-  const { content, important } = request.body
-
-  Note.findByIdAndUpdate(
-    request.params.id,
-
-    { content, important },
-    { new: true, runValidators: true, context: 'query' }
-  )
-    .then(updatedNote => {
-      response.json(updatedNote)
-    })
-    .catch(error => next(error))
-})
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
